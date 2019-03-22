@@ -98,8 +98,49 @@ public static void Run(CloudBlockBlob inputBlob, string fileName, string fileExt
         IMediaProcessor processor = GetLatestMediaProcessorByName("Media Encoder Standard");
 
         // Read in custom preset string
-        string preset = File.ReadAllText(@"D:\home\site\wwwroot\Presets\singleMP4.json");
-
+        //string preset = File.ReadAllText(@"D:\home\site\wwwroot\Presets\singleMP4.json");
+        var preset = @"{
+  ""Version"": 1.0,
+  ""Codecs"": [
+    {
+      ""KeyFrameInterval"": ""00:00:02"",
+      ""StretchMode"": ""AutoSize"",
+      ""SceneChangeDetection"": true,
+      ""H264Layers"": [
+        {
+          ""Profile"": ""Auto"",
+          ""Level"": ""auto"",
+          ""Bitrate"": 4500,
+          ""MaxBitrate"": 4500,
+          ""BufferWindow"": ""00:00:05"",
+          ""Width"": 1280,
+          ""Height"": 720,
+          ""BFrames"": 3,
+          ""ReferenceFrames"": 3,
+          ""AdaptiveBFrame"": true,
+          ""Type"": ""H264Layer"",
+          ""FrameRate"": ""0/1""
+        }
+      ],
+      ""Type"": ""H264Video""
+    },
+    {
+      ""Profile"": ""AACLC"",
+      ""Channels"": 2,
+      ""SamplingRate"": 48000,
+      ""Bitrate"": 128,
+      ""Type"": ""AACAudio""
+    }
+  ],
+  ""Outputs"": [
+    {
+      ""FileName"": ""{Basename}_{Width}x{Height}_{VideoBitrate}.mp4"",
+      ""Format"": {
+        ""Type"": ""MP4Format""
+      }
+    }
+  ]
+}";
         // Create a task with the encoding details, using a custom preset
         ITask task = job.Tasks.AddNew("Encode with Custom Preset",
             processor,
