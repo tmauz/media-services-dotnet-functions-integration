@@ -76,7 +76,7 @@ public static void Run(CloudBlockBlob inputBlob, string fileName, string fileExt
         // Step 2: Create an Encoding Job
 
         // Check for existing Notification Endpoint with the name "FunctionWebHook"
-        /*
+        
         var existingEndpoint = _context.NotificationEndPoints.Where(e=>e.Name == "FunctionWebHook").FirstOrDefault();
         INotificationEndPoint endpoint = null;
 
@@ -89,7 +89,7 @@ public static void Run(CloudBlockBlob inputBlob, string fileName, string fileExt
                     NotificationEndPointType.WebHook, _webHookEndpoint, keyBytes); 
             log.Info($"Notification Endpoint Created with Key : {keyBytes.ToString()}");
         }
-*/
+
         // Declare a new encoding job with the Standard encoder
         IJob job = _context.Jobs.Create("Azure Function - MES Job");
 
@@ -156,14 +156,14 @@ public static void Run(CloudBlockBlob inputBlob, string fileName, string fileExt
         task.OutputAssets.AddNew(fileName, AssetCreationOptions.None);
 
         // Add the WebHook notification to this Task and request all notification state changes
-        /*
+        
         if (endpoint != null){
             task.TaskNotificationSubscriptions.AddNew(NotificationJobState.All, endpoint, true);
             log.Info($"Created Notification Subscription for endpoint: {_webHookEndpoint}");
         }else{
             log.Error("No Notification Endpoint is being used");
         }
-        */
+        
         job.Submit();
         log.Info("Job Submitted");
 
